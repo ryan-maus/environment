@@ -80,9 +80,9 @@ export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH
 ### ZSH Configuration ###
 #########################
 
-HISTSIZE=100000               # size of in-memory terminal history
-SAVEHIST=1000000              # size of history file
-HISTFILE=$HOME/.zsh_history   # save history to this file
+HISTSIZE=10000000                    # size of in-memory terminal history
+SAVEHIST=10000000                    # size of history file
+HISTFILE=$HOME/.zsh_history          # save history to this file
 
 setopt AUTO_MENU                     # always use menu completion for second consecutive completion request (<TAB>)
 setopt AUTO_LIST                     # always list choices on ambiguous completion
@@ -93,10 +93,13 @@ setopt PUSHD_TO_HOME                 # push ~ onto directory stack when no argum
 setopt PUSHD_SILENT                  # 'pushd' command operates silently
 setopt PUSHD_IGNORE_DUPS             # do not store duplicate entries in the directory stack
 setopt CORRECT_ALL                   # prompt for typing corrections for all arguments in a line
-setopt HIST_IGNORE_DUPS              # removes duplicates from history
+setopt HIST_IGNORE_DUPS              # Don't record an entry if new entry is a duplicate
+setopt HIST_IGNORE_ALL_DUPS          # Delete old recorded entry if new entry is a duplicate
 setopt HIST_FIND_NO_DUPS             # when searching history, don't display results already cycled through
 setopt HIST_REDUCE_BLANKS            # trims whitespace from commands before being stored in history
 setopt INC_APPEND_HISTORY            # append history to file incrementally (instead of on shell exit)
+setopt SHARE_HISTORY                 # share history between all sessions
+setopt HIST_SAVE_NO_DUPS             # don't write duplicate entries to the history file
 setopt EXTENDED_HISTORY              # adds timestamps to history file
 setopt EXTENDED_GLOB                 # treat '#', '~' and '^' in filename patterns
 setopt NO_HUP                        # automatically nohup all commands
@@ -110,7 +113,7 @@ setopt NONOMATCH                     # pass unmatched globs to command instead o
 unsetopt MENU_COMPLETE               # Do not autoselect the first completion entry.
 unsetopt CLOBBER                     # Do not allow > and >> to overwrite files (use >! and >>! instead)
 
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'   # excludes '/'
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'   # excludes '/' so we can delete single directories from path arguments
 
 
 #######################
@@ -148,7 +151,7 @@ zstyle ':completion:*' group-name ''
 # show descriptions for command options if available
 zstyle ':completion:*' verbose yes
 
-# case insensitive completions 
+# case insensitive completions
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # hypen/dash insensitive completions
@@ -266,10 +269,10 @@ zplug "bhilburn/powerlevel9k", as:theme
 	POWERLEVEL9K_STATUS_OK_BACKGROUND='black'
 
 	per_dir_history_status(){
-	    if [[ $_per_directory_history_is_global == true ]]; then 
-		echo "\u$CODEPOINT_OF_AWESOME_GLOBE"
+	    if [[ $_per_directory_history_is_global == true ]]; then
+		    echo "\u$CODEPOINT_OF_AWESOME_GLOBE"
 	    else
-		echo "\u$CODEPOINT_OF_OCTICONS_FILE_SUBMODULE"
+		    echo "\u$CODEPOINT_OF_OCTICONS_FILE_SUBMODULE"
 	    fi
 	}
 	POWERLEVEL9K_CUSTOM_PER_DIR_HISTORY_STATUS="per_dir_history_status"
@@ -309,12 +312,18 @@ alias grep="grep --color=auto"                         # grep with color
 alias egrep="egrep --color=auto"                       # egrep with color
 alias less="less -R"                                   # less with color
 alias egrepcpp="egrep -I --include=\*.{cc,cpp,h,inl}"  # egrep with only c++ source files
+alias dirs='dirs -v'                                   # always show directory stack as a numbered list
 
-# TODO: more nocorrect aliases probably, see OMZ
-alias touch='nocorrect touch'     # do not correct args to 'cp' command
-alias mv='nocorrect mv'           # do not correct args to 'cp' command
-alias cp='nocorrect cp'           # do not correct args to 'cp' command
-alias dirs='dirs -v'              # always show directory stack as a numbered list
+# These bypass correction feature (CORRECT_ALL configuration above)
+alias cd='nocorrect cd'           # do not correct args to 'cd' command
+alias touch='nocorrect touch'     # do not correct args to 'touch' command
+alias mv='nocorrect mv -i'        # do not correct args to 'mv' command; prompt before overwrite
+alias cp='nocorrect cp -i'        # do not correct args to 'cp' command; prompt before overwrite
+alias ln='nocorrect ln -i'        # do not correct args to 'ln' command; prompt before overwrite
+alias rm='nocorrect rm'           # do not correct args to 'rm' command
+alias man='nocorrect man'         # do not correct args to 'man' command
+alias mkdir='nocorrect mkdir -p'  # do not correct args to 'mkdir' command; generate all dirs in path if necessary
+alias sudo='nocorrect sudo'       # do not correct args to 'sudo' command
 
 
 ######################
