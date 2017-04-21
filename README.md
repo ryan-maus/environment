@@ -1,2 +1,2 @@
 # environment
-Configurations for zsh, emacs, vim, git, etc.
+Configurations for zsh, bash, emacs, vim, git, etc.
