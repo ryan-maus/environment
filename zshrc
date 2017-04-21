@@ -211,23 +211,30 @@ zstyle '*' single-ignored show
 ### Plugins ###
 ###############
 
+# Automatic terminal window titles
 zplug "jreese/zsh-titles"
 
+# Provide a single argless command for expanding zip, tar, etc
 zplug "plugins/extract", from:oh-my-zsh
 
+# Apply syntax highlighting to man pages
 zplug "zuxfoucault/colored-man-pages_mod"
 
+# Fuzzy search history with current input, opens menu (ctrl-r)
 zplug "zdharma/history-search-multi-word"
 	zstyle ":history-search-multi-word" page-size "$LINES" # Number of entries to show (default is $LINES/3)
 
+# Provide keybindings to quickly navigate directory stack
 zplug "plugins/dirhistory", from:oh-my-zsh
 	bindkey -M emacs '^[p' dirhistory_zle_dirhistory_back    # quick cd to previous directory
 	bindkey -M emacs '^[n' dirhistory_zle_dirhistory_future  # quick cd to next directory
 
+# Store history on a per-directory basis, as well as global.  Toggle with (ctrl-h)
 zplug "jimhester/per-directory-history"
 	HISTORY_BASE=$HOME/.zsh_history_by_dir  # storage location for per-directory history
 	PER_DIRECTORY_HISTORY_TOGGLE='^H'       # keybind for toggling per-directory history
 
+# Apply syntax highlighting as you type
 zplug "zsh-users/zsh-syntax-highlighting", defer:2   # defer:2 runs after compinit
 	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern root line)
 	typeset -A ZSH_HIGHLIGHT_STYLES
@@ -240,9 +247,11 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2   # defer:2 runs after compin
 	ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan,bold'
 	ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=cyan,bold'
 
+# Exact history search with current input, replaces input (ctrl-n and ctrl-p to cycle)
 zplug "zsh-users/zsh-history-substring-search", defer:3 # defer:3 runs after zsh-syntax-highlighting
 	bindkey -M emacs '^P' history-substring-search-up    # search history with text currently on command line
 	bindkey -M emacs '^N' history-substring-search-down  # search history with text currently on command line
+
 
 #############
 ### Theme ###
