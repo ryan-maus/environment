@@ -211,6 +211,9 @@ zstyle '*' single-ignored show
 ### Plugins ###
 ###############
 
+# Extra completions for a wide variety of applications (cmake, ansible, etc)
+zplug "zsh-users/zsh-completions"
+
 # Automatic terminal window titles
 zplug "jreese/zsh-titles"
 
