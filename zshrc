@@ -10,7 +10,7 @@ if [ ! -d $ZPLUG_DIR ]; then
     printf "Clone zplug [y/N]: "
     if read -q; then
         echo;
-	cd $DEPENDENCY_DIR
+        cd $DEPENDENCY_DIR
 	git clone "https://github.com/zplug/zplug.git"
 	cd -
     fi
@@ -49,7 +49,7 @@ if [ ! -d $TERMINAL_FONTS_DIR ]; then
     printf "Clone awesome-terminal-fonts? [y/N]: "
     if read -q; then
         echo;
-	cd $DEPENDENCY_DIR
+        cd $DEPENDENCY_DIR
 	git clone "https://github.com/gabrielelana/awesome-terminal-fonts.git"
 	echo "This dependency needs to be installed manually!"
 	cd -
@@ -211,6 +211,9 @@ zstyle '*' single-ignored show
 ### Plugins ###
 ###############
 
+# Fill out buffer with likely command as you type (C-e to accept) (TODO: currently broken if we use xterm-256 color for some reason)
+#zplug "zsh-users/zsh-autosuggestions"
+
 # Extra completions for a wide variety of applications (cmake, ansible, etc)
 zplug "zsh-users/zsh-completions"
 
@@ -321,9 +324,9 @@ alias ls='ls --color=auto'                             # ls with color
 alias ll="ls -lAh"                                     # long-list format
 alias c="clear"                                        # clear screen
 alias grep="grep --color=auto"                         # grep with color
-alias egrep="egrep --color=auto"                       # egrep with color
+alias egrep="egrep -n --color=auto"                       # egrep with color
 alias less="less -R"                                   # less with color
-alias egrepcpp="egrep -I --include=\*.{cc,cpp,h,inl}"  # egrep with only c++ source files
+alias egrepcpp="egrep -n -I --include=\*.{cc,cpp,h,inl}"  # egrep with only c++ source files
 alias dirs='dirs -v'                                   # always show directory stack as a numbered list
 
 # These bypass correction feature (CORRECT_ALL configuration above)
