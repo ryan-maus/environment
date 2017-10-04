@@ -320,7 +320,7 @@ _per-directory-history-set-global-history   # default for this plugin is per-dir
 ###############
 
 alias g='git'
-alias ls='ls --color=auto'                             # ls with color
+alias ls='ls --color=auto --time-style=long-iso'       # ls with color and YYYY-MM-DD time format
 alias ll="ls -lAh"                                     # long-list format
 alias c="clear"                                        # clear screen
 alias grep="grep --color=auto"                         # grep with color
