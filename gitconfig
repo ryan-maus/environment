@@ -1,0 +1,52 @@
+[core]
+    pager = "less -F"  # only activate paging if output doesn't fit on one screen
+[color]
+    ui = auto  # enable color in terminals that support it
+[init]
+    templatedir = ~/.git-templates
+[push]
+    default = simple  # only push current branch
+[status]
+    submoduleSummary = true   # display submodule rev change summaries
+    showUntrackedFiles = all  # show contents of untracked directories
+[advice]
+    statusHints = false  # do not show command hints for 'git status'
+[grep]
+    extendRegexp = true  # use extended regex
+[alias]
+    ls = log --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(bold cyan)[%aD]%C(reset) %C(white)%s%C(reset) %C(dim white)- %ae%C(reset) %C(bold yellow)%d%C(reset)'
+    lsa = !"git ls --all"    # log (all branches)
+    g = !"git ls --graph"    # graph
+    ga = !"git g --all"      # graph (all branches)
+    ll = !"git ls --stat=80" # summary of file changes
+    lla = !"git ll --all"    # summary of file changes (all branches)
+    today = !"git lla --since='12 hours ago'"
+    recent = !"git lla --since='36 hours ago'"
+    f = fetch -p # always prune when fetching remote branches
+    b = branch -vv # always show all branches and verbose info
+    d = diff
+    dc = diff --cached
+    s = status
+    ci = commit
+    co = checkout
+    pr = pull --rebase
+    ssave = "!f() { git stash save $1; }; f"
+    sshow = "!f() { git stash show stash^{/$*} -p; }; f"
+    sdrop = "!f() { git stash drop stash^{/$*}; }; f"
+    sapply = "!f() { git stash apply stash^{/$*}; }; f"
+    diffr  = !"git diff "$1"^.."$1"" # diff-revision (usage: diffr <hash> <hash>)
+    ia = merge-base --is-ancestor # is-ancestor (usage: ia <hash> <hash>)
+#[difftool "kdiff3"]
+#    path = /home/ryamau/bin/kdiff3
+#    trustExitCode = false
+#[difftool]
+#    prompt = false
+#[diff]
+#    tool = kdiff3
+#[mergetool "kdiff3"]
+#    path = /home/ryamau/bin/kdiff3
+#    trustExitCode = false
+#[mergetool]
+#    keepBackup = false
+#[merge]
+#    tool = kdiff3
