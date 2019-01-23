@@ -1,5 +1,5 @@
 ####################
-### Dependencies ### (cloned here, some requre manual installation)
+### Dependencies ### (cloned here, some require manual installation)
 ####################
 
 DEPENDENCY_DIR=$HOME/source/thirdparty/
@@ -63,7 +63,7 @@ source $TERMINAL_FONTS_DIR/build/octicons-regular.sh
 ### Colors ###
 ##############
 
-export TERM="xterm-256color"
+export TERM="xterm"
 autoload -U colors && colors
 
 
@@ -211,8 +211,8 @@ zstyle '*' single-ignored show
 ### Plugins ###
 ###############
 
-# Fill out buffer with likely command as you type (C-e to accept) (TODO: currently broken if we use xterm-256 color for some reason)
-#zplug "zsh-users/zsh-autosuggestions"
+# Fill out buffer with likely command as you type (C-e to accept)
+zplug "zsh-users/zsh-autosuggestions"
 
 # Extra completions for a wide variety of applications (cmake, ansible, etc)
 zplug "zsh-users/zsh-completions"
@@ -241,7 +241,7 @@ zplug "jimhester/per-directory-history"
 	PER_DIRECTORY_HISTORY_TOGGLE='^H'       # keybind for toggling per-directory history
 
 # Apply syntax highlighting as you type
-zplug "zsh-users/zsh-syntax-highlighting", defer:2   # defer:2 runs after compinit
+zplug "zsh-users/zsh-syntax-highlighting", defer:2 # defer:2 runs after compinit
 	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern root line)
 	typeset -A ZSH_HIGHLIGHT_STYLES
 	ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
@@ -274,8 +274,8 @@ zplug "bhilburn/powerlevel9k", as:theme
 	POWERLEVEL9K_COLOR_SCHEME='light'
 	POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 	POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-	POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="$UNICODE_BOX_DRAWINGS_LIGHT_ARC_DOWN_AND_RIGHT$UNICODE_BOX_DRAWINGS_LIGHT_HORIZONTAL"
-	POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="$UNICODE_BOX_DRAWINGS_LIGHT_ARC_UP_AND_RIGHT$UNICODE_BOX_DRAWINGS_LIGHT_HORIZONTAL$ "
+	POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="╭─"
+	POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─$ "
 	POWERLEVEL9K_SHOW_CHANGESET=true
 	POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
 	POWERLEVEL9K_TIME_FORMAT="%D{%Y/%m/%d \u$CODEPOINT_OF_AWESOME_CLOCK_O %H:%M:%S}"
@@ -328,6 +328,7 @@ alias egrep="egrep -n --color=auto"                       # egrep with color
 alias less="less -R"                                   # less with color
 alias egrepcpp="egrep -n -I --include=\*.{cc,cpp,h,inl}"  # egrep with only c++ source files
 alias dirs='dirs -v'                                   # always show directory stack as a numbered list
+alias seqday='seq -f "%02g"'
 
 # These bypass correction feature (CORRECT_ALL configuration above)
 alias cd='nocorrect cd'           # do not correct args to 'cd' command
@@ -339,6 +340,7 @@ alias rm='nocorrect rm'           # do not correct args to 'rm' command
 alias man='nocorrect man'         # do not correct args to 'man' command
 alias mkdir='nocorrect mkdir -p'  # do not correct args to 'mkdir' command; generate all dirs in path if necessary
 alias sudo='nocorrect sudo'       # do not correct args to 'sudo' command
+alias bazel='nocorrect bazel'
 
 
 ######################
