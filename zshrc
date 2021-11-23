@@ -57,6 +57,7 @@ if [ ! -d $TERMINAL_FONTS_DIR ]; then
 fi
 source $TERMINAL_FONTS_DIR/build/fontawesome-regular.sh
 source $TERMINAL_FONTS_DIR/build/octicons-regular.sh
+source $TERMINAL_FONTS_DIR/build/devicons-regular.sh
 
 
 ##############
@@ -81,7 +82,7 @@ export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH
 #########################
 
 HISTSIZE=10000000                    # size of in-memory terminal history
-SAVEHIST=10000000                    # size of history file
+SAVEHIST=100000000                   # size of history file
 HISTFILE=$HOME/.zsh_history          # save history to this file
 
 setopt AUTO_MENU                     # always use menu completion for second consecutive completion request (<TAB>)
@@ -212,7 +213,7 @@ zstyle '*' single-ignored show
 ###############
 
 # Fill out buffer with likely command as you type (C-e to accept)
-zplug "zsh-users/zsh-autosuggestions"
+#zplug "zsh-users/zsh-autosuggestions"
 
 # Extra completions for a wide variety of applications (cmake, ansible, etc)
 zplug "zsh-users/zsh-completions"
@@ -268,9 +269,11 @@ UNICODE_BOX_DRAWINGS_LIGHT_ARC_DOWN_AND_RIGHT="\u256D"
 UNICODE_BOX_DRAWINGS_LIGHT_HORIZONTAL="\u2500"
 
 zplug "bhilburn/powerlevel9k", as:theme
+	POWERLEVEL9K_VCS_GIT_HOOKS=(git-remotebranch)
+	POWERLEVEL9K_USE_CACHE=true
 	POWERLEVEL9K_MODE='awesome-fontconfig'
 	POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time context dir ssh)
-	POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vcs status background_jobs custom_per_dir_history_status)
+	POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_gcloud_context custom_gke_context vcs status background_jobs custom_per_dir_history_status)
 	POWERLEVEL9K_COLOR_SCHEME='light'
 	POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 	POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
@@ -278,7 +281,7 @@ zplug "bhilburn/powerlevel9k", as:theme
 	POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─$ "
 	POWERLEVEL9K_SHOW_CHANGESET=true
 	POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-	POWERLEVEL9K_TIME_FORMAT="%D{%Y/%m/%d \u$CODEPOINT_OF_AWESOME_CLOCK_O %H:%M:%S}"
+	POWERLEVEL9K_TIME_FORMAT="%D{%Y/%m/%d %H:%M:%S}"
 	POWERLEVEL9K_TIME_BACKGROUND='cyan'
 	POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='black'
 	POWERLEVEL9K_STATUS_OK_BACKGROUND='black'
@@ -293,6 +296,22 @@ zplug "bhilburn/powerlevel9k", as:theme
 	POWERLEVEL9K_CUSTOM_PER_DIR_HISTORY_STATUS="per_dir_history_status"
 	POWERLEVEL9K_CUSTOM_PER_DIR_HISTORY_STATUS_BACKGROUND="magenta"
 	POWERLEVEL9K_CUSTOM_PER_DIR_HISTORY_STATUS_FOREGROUND="white"
+
+	get_gcloud_context(){
+		gcloud_context=$(gcloud config get-value project)
+		echo "\u${CODEPOINT_OF_DEVICONS_GOOGLE_CLOUD_PLATFORM} ${gcloud_context}"
+	}
+	POWERLEVEL9K_CUSTOM_GCLOUD_CONTEXT="get_gcloud_context"
+	POWERLEVEL9K_CUSTOM_GCLOUD_CONTEXT_BACKGROUND="magenta"
+	POWERLEVEL9K_CUSTOM_GCLOUD_CONTEXT_FOREGROUND="white"
+
+	get_gke_context(){
+		gke_context=$(kubectl config current-context)
+		echo "\u${CODEPOINT_OF_DEVICONS_DOCKER} ${gke_context}"
+	}
+	POWERLEVEL9K_CUSTOM_GKE_CONTEXT="get_gke_context"
+	POWERLEVEL9K_CUSTOM_GKE_CONTEXT_BACKGROUND="white"
+	POWERLEVEL9K_CUSTOM_GKE_CONTEXT_FOREGROUND="magenta"
 
 
 #############
@@ -314,6 +333,9 @@ zplug load
 
 _per-directory-history-set-global-history   # default for this plugin is per-directory history, set it back to global
 
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
 
 ###############
 ### Aliases ###
@@ -342,7 +364,6 @@ alias mkdir='nocorrect mkdir -p'  # do not correct args to 'mkdir' command; gene
 alias sudo='nocorrect sudo'       # do not correct args to 'sudo' command
 alias bazel='nocorrect bazel'
 
-
 ######################
 ### Global Aliases ### (apply anywhere in command line)
 ######################
@@ -351,7 +372,6 @@ alias -g G='| egrep'
 alias -g WC='| wc -l'
 alias -g TF='| tail -f'
 alias -g DN='/dev/null'
-
 
 #################
 ### Functions ###
@@ -366,3 +386,4 @@ ssh-copy-id-if-needed()
     fi
 }
 
+source /home/rmaus/source/headlands/rmaus_zsh_scripts/htgm.zsh
