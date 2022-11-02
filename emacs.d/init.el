@@ -36,8 +36,9 @@
 (show-paren-mode t)            ; show matching parens
 (transient-mark-mode t)        ; enable text highlighting
 (global-font-lock-mode t)      ; enable syntax highlighting
-(global-linum-mode t)          ; show line numbers in gutter
-(setq linum-format "%4d \u2502 ") ; add separation between the line number gutters and the body text
+(global-display-line-numbers-mode t) ; enable line numbers (replaces old linum-mode)
+; (global-linum-mode t)          ; show line numbers in gutter
+; (setq linum-format "%4d \u2502 ") ; add separation between the line number gutters and the body text
 (global-subword-mode t)        ; enable CamelCase awareness for word-based operations
 (global-auto-revert-mode t)    ; automatically sync buffers with disk
 (fset 'yes-or-no-p 'y-or-n-p)  ; replace yes/no prompts with y/n
@@ -51,8 +52,8 @@
 
 ;; (set-default-font "Ubuntu Mono-14")
 
-(remove-hook 'find-file-hook 'vc-find-file-hook)
-(remove-hook 'find-file-hook 'vc-refresh-state)
+; (remove-hook 'find-file-hook 'vc-find-file-hook)
+; (remove-hook 'find-file-hook 'vc-refresh-state)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -62,7 +63,7 @@
  '(custom-safe-themes
    '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default))
  '(package-selected-packages
-   '(color-theme-solarized solarized-theme helm dash color-theme)))
+   '(diff-hl git-gutter color-theme-solarized solarized-theme helm dash color-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -70,14 +71,42 @@
  ;; If there is more than one, they won't work right.
  '(hl-line ((t (:underline t)))))
 
+
+;;;;;;;;;;
+;; helm ;;
+;;;;;;;;;;
 (require 'helm)
 
-; Replace builtin commands with Helm equivalents
+; Replace builtin commands with helm equivalents
 (global-set-key (kbd "M-x")                          'undefined)           ; must do before remapping M-X
 (global-set-key (kbd "M-x")                          'helm-M-x)            ; replace M-x with helm version
 (global-set-key (kbd "M-y")                          'helm-show-kill-ring) ; replace M-y with helm version
 (global-set-key (kbd "C-x C-f")                      'helm-find-files)     ; replace C-x C-f with helm version
 (define-key global-map [remap list-buffers]          'helm-mini)           ; replace C-x C-b with helm version
 
-; Additional Helm commands
+; Additional helm commands
 (global-set-key (kbd "C-c <SPC>")                    'helm-mark-ring)
+
+;;;;;;;;;;;;;;;;
+;; git-gutter ;;
+;;;;;;;;;;;;;;;;
+(require 'git-gutter)
+
+(global-git-gutter-mode t)
+(custom-set-variables
+ '(git-gutter:modified-sign ">>")
+ '(git-gutter:added-sign "++")
+ '(git-gutter:deleted-sign "--")
+ '(git-gutter:unchanged-sign "  ")
+ '(git-gutter:separator-sign "|"))
+(set-face-foreground 'git-gutter:separator "#657b83") ; solarized-base00
+(set-face-background 'git-gutter:unchanged "#073642") ; solarized-base02
+
+(set-face-background 'git-gutter:modified "#b58900") ; solarized-yellow
+(set-face-foreground 'git-gutter:modified "black")
+
+(set-face-background 'git-gutter:added "#859900") ; solarized-green
+(set-face-foreground 'git-gutter:added "black")
+
+(set-face-background 'git-gutter:deleted "#dc322f") ; solarized-red
+(set-face-foreground 'git-gutter:deleted "black")
