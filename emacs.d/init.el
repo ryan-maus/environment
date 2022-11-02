@@ -62,8 +62,13 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default))
+ '(git-gutter:added-sign "++")
+ '(git-gutter:deleted-sign "--")
+ '(git-gutter:modified-sign ">>")
+ '(git-gutter:separator-sign "|")
+ '(git-gutter:unchanged-sign "  ")
  '(package-selected-packages
-   '(diff-hl git-gutter color-theme-solarized solarized-theme helm dash color-theme)))
+   '(goto-last-change diff-hl git-gutter color-theme-solarized solarized-theme helm dash color-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -71,6 +76,12 @@
  ;; If there is more than one, they won't work right.
  '(hl-line ((t (:underline t)))))
 
+;;;;;;;;;;;;;;;;;;;;;;
+;; goto-last-change ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(require 'goto-last-change)
+
+(global-set-key (kbd "C-q")                      'goto-last-change)
 
 ;;;;;;;;;;
 ;; helm ;;
@@ -93,12 +104,7 @@
 (require 'git-gutter)
 
 (global-git-gutter-mode t)
-(custom-set-variables
- '(git-gutter:modified-sign ">>")
- '(git-gutter:added-sign "++")
- '(git-gutter:deleted-sign "--")
- '(git-gutter:unchanged-sign "  ")
- '(git-gutter:separator-sign "|"))
+
 (set-face-foreground 'git-gutter:separator "#657b83") ; solarized-base00
 (set-face-background 'git-gutter:unchanged "#073642") ; solarized-base02
 
