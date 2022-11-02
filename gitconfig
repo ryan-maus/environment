@@ -1,5 +1,6 @@
 [core]
     pager = "less -F"  # only activate paging if output doesn't fit on one screen
+    excludesfile = ~/.gitignore
 [color]
     ui = auto  # enable color in terminals that support it
 [init]
@@ -34,19 +35,52 @@
     sshow = "!f() { git stash show stash^{/$*} -p; }; f"
     sdrop = "!f() { git stash drop stash^{/$*}; }; f"
     sapply = "!f() { git stash apply stash^{/$*}; }; f"
+
+    slist = stash list
+    #ssave = stash save
+    #sapply = "!sh -c 'git stash apply stash@{$1}' -"
+    #sdrop = "!sh -c 'git stash drop stash@{$1}' -"
+    #sshow = "!sh -c 'git stash show stash@{$1} -p' -"
+
     diffr  = !"git diff "$1"^.."$1"" # diff-revision (usage: diffr <hash> <hash>)
     ia = merge-base --is-ancestor # is-ancestor (usage: ia <hash> <hash>)
+    forget = rm --cached
+    addu = add --update # adds only tracked files to stage
+
+    # Common typos
+    pus = push
+    pul = pull
+    dif = diff
+
+    difft = difftool
+
+[difftool]
+    prompt = false
+
+[diff]
+    tool = difftastic
+#    tool = kdiff3
+
+[difftool "difftastic"]
+    cmd = difft "$LOCAL" "$REMOTE"
+
 #[difftool "kdiff3"]
 #    path = /home/ryamau/bin/kdiff3
 #    trustExitCode = false
-#[difftool]
-#    prompt = false
-#[diff]
+
+#[mergetool]
+#    keepBackup = false
+
+#[merge]
 #    tool = kdiff3
+
 #[mergetool "kdiff3"]
 #    path = /home/ryamau/bin/kdiff3
 #    trustExitCode = false
-#[mergetool]
-#    keepBackup = false
-#[merge]
-#    tool = kdiff3
+
+[pager]
+    difftool = true
+
+[user]
+	name = Ryan Maus
+	email = rmaus@headlandstech.com

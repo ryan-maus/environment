@@ -1,7 +1,8 @@
-(package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;; (package-initialize)
 
-(load-theme 'solarized t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+
+(load-theme 'solarized-dark t)
 
 (setq-default
  gc-cons-threshold 100000000   ; increase memory limit before running a GC
@@ -24,9 +25,10 @@
  abbrev-mode t                 ; enables global abbreviation mode (auto spellcheck fix)
  org-startup-indented t        ; starts org mode in indented mode
  desktop-auto-save-timeout 30  ; saves emacs desktop to disk every 30 seconds
+ scroll-step 1
+ scroll-conservatively 10000
  )
 
-(tool-bar-mode -1)             ; disables toolbar in X windowed mode
 (column-number-mode t)         ; show column numbers in the mode-line
 (delete-selection-mode t)      ; selected region is replaced upon typing new text
 (global-hl-line-mode t)        ; highlight current line
@@ -35,28 +37,47 @@
 (transient-mark-mode t)        ; enable text highlighting
 (global-font-lock-mode t)      ; enable syntax highlighting
 (global-linum-mode t)          ; show line numbers in gutter
+(setq linum-format "%4d \u2502 ") ; add separation between the line number gutters and the body text
 (global-subword-mode t)        ; enable CamelCase awareness for word-based operations
 (global-auto-revert-mode t)    ; automatically sync buffers with disk
 (fset 'yes-or-no-p 'y-or-n-p)  ; replace yes/no prompts with y/n
 (toggle-save-place-globally t) ; saves place in files between emacs sessions
-(desktop-save-mode t)          ; saves open buffer list to disk between emacs sessions
+;; (desktop-save-mode t)          ; saves open buffer list to disk between emacs sessions
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 
-(set-default-font "Ubuntu Mono-14")
+;; (set-default-font "Ubuntu Mono-14")
+
+(remove-hook 'find-file-hook 'vc-find-file-hook)
+(remove-hook 'find-file-hook 'vc-refresh-state)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (color-theme-solarized))))
+ '(custom-safe-themes
+   '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default))
+ '(package-selected-packages
+   '(color-theme-solarized solarized-theme helm dash color-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(hl-line ((t (:underline t)))))
+
+(require 'helm)
+
+; Replace builtin commands with Helm equivalents
+(global-set-key (kbd "M-x")                          'undefined)           ; must do before remapping M-X
+(global-set-key (kbd "M-x")                          'helm-M-x)            ; replace M-x with helm version
+(global-set-key (kbd "M-y")                          'helm-show-kill-ring) ; replace M-y with helm version
+(global-set-key (kbd "C-x C-f")                      'helm-find-files)     ; replace C-x C-f with helm version
+(define-key global-map [remap list-buffers]          'helm-mini)           ; replace C-x C-b with helm version
+
+; Additional Helm commands
+(global-set-key (kbd "C-c <SPC>")                    'helm-mark-ring)

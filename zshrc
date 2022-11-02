@@ -114,7 +114,7 @@ setopt NONOMATCH                     # pass unmatched globs to command instead o
 unsetopt MENU_COMPLETE               # Do not autoselect the first completion entry.
 unsetopt CLOBBER                     # Do not allow > and >> to overwrite files (use >! and >>! instead)
 
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'   # excludes '/' so we can delete single directories from path arguments
+WORDCHARS='*?.[]~=&;!#$%^(){}<>'   # excludes '/' so we can delete single directories from path arguments
 
 
 #######################
@@ -363,6 +363,7 @@ alias man='nocorrect man'         # do not correct args to 'man' command
 alias mkdir='nocorrect mkdir -p'  # do not correct args to 'mkdir' command; generate all dirs in path if necessary
 alias sudo='nocorrect sudo'       # do not correct args to 'sudo' command
 alias bazel='nocorrect bazel'
+alias git='nocorrect git'
 
 ######################
 ### Global Aliases ### (apply anywhere in command line)
