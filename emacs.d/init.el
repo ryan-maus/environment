@@ -1,6 +1,19 @@
-;; (package-initialize)
-
+(require 'package)
+(add-to-list 'package-archives '("melpastable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 (load-theme 'solarized-dark t)
 
@@ -37,8 +50,6 @@
 (transient-mark-mode t)        ; enable text highlighting
 (global-font-lock-mode t)      ; enable syntax highlighting
 (global-display-line-numbers-mode t) ; enable line numbers (replaces old linum-mode)
-; (global-linum-mode t)          ; show line numbers in gutter
-; (setq linum-format "%4d \u2502 ") ; add separation between the line number gutters and the body text
 (global-subword-mode t)        ; enable CamelCase awareness for word-based operations
 (global-auto-revert-mode t)    ; automatically sync buffers with disk
 (fset 'yes-or-no-p 'y-or-n-p)  ; replace yes/no prompts with y/n
@@ -50,43 +61,11 @@
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 
-;; (set-default-font "Ubuntu Mono-14")
-
-; (remove-hook 'find-file-hook 'vc-find-file-hook)
-; (remove-hook 'find-file-hook 'vc-refresh-state)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" default))
- '(git-gutter:added-sign "++")
- '(git-gutter:deleted-sign "--")
- '(git-gutter:modified-sign ">>")
- '(git-gutter:separator-sign "|")
- '(git-gutter:unchanged-sign "  ")
- '(package-selected-packages
-   '(goto-last-change diff-hl git-gutter color-theme-solarized solarized-theme helm dash color-theme)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(hl-line ((t (:underline t)))))
-
-;;;;;;;;;;;;;;;;;;;;;;
-;; goto-last-change ;;
-;;;;;;;;;;;;;;;;;;;;;;
-(require 'goto-last-change)
-
-(global-set-key (kbd "C-q")                      'goto-last-change)
 
 ;;;;;;;;;;
 ;; helm ;;
 ;;;;;;;;;;
-(require 'helm)
+(use-package helm)
 
 ; Replace builtin commands with helm equivalents
 (global-set-key (kbd "M-x")                          'undefined)           ; must do before remapping M-X
@@ -98,21 +77,122 @@
 ; Additional helm commands
 (global-set-key (kbd "C-c <SPC>")                    'helm-mark-ring)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; LSP configuration ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init (setq
+         lsp-keymap-prefix "C-c l"
+         lsp-idle-delay 0.1)
+  :hook ((c++-mode . lsp)
+         (c-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+)
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  )
+
+(use-package helm-lsp
+  :commands helm-lsp-workspace-symbol
+  )
+
+(use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list
+  )
+
+(use-package dap-mode)
+
+(use-package dap-cpptools)
+
+(use-package which-key
+  :config (which-key-mode)
+  )
+
+
+;;;;;;;;;;;;
+;; Blamer ;;
+;;;;;;;;;;;;
+
+(use-package blamer
+  :ensure t
+  :defer 20
+  :custom
+  (blamer-idle-time 0.5)
+  (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                    :background nil
+                    :height 140
+                    :italic t)))
+  :config
+  (global-blamer-mode 1))
+(global-set-key (kbd "C-c i") 'blamer-show-commit-info)
+(setq blamer-max-commit-message-length 120)
+
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; multiple-cursors ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(use-package multiple-cursors)
+
+(global-set-key (kbd "C-.") 'mc/mark-next-like-this)
+
+
+;;;;;;;;;;;;;;;;;;;
+;; expand-region ;;
+;;;;;;;;;;;;;;;;;;;
+(use-package expand-region)
+
+(global-set-key (kbd "C-c =") 'er/expand-region)
+
+
 ;;;;;;;;;;;;;;;;
 ;; git-gutter ;;
 ;;;;;;;;;;;;;;;;
-(require 'git-gutter)
-
+(use-package git-gutter
+  :init (setq
+         git-gutter:added-sign "++"
+         git-gutter:deleted-sign "--"
+         git-gutter:modified-sign ">>"
+         git-gutter:separator-sign "|"
+         git-gutter:unchanged-sign "  ")
+  :config (set-face-foreground 'git-gutter:separator "#657b83") ; solarized-base00
+          (set-face-background 'git-gutter:unchanged "#073642") ; solarized-base02
+          (set-face-background 'git-gutter:modified "#b58900") ; solarized-yellow
+          (set-face-foreground 'git-gutter:modified "black")
+          (set-face-background 'git-gutter:added "#859900") ; solarized-green
+          (set-face-foreground 'git-gutter:added "black")
+          (set-face-background 'git-gutter:deleted "#dc322f") ; solarized-red
+          (set-face-foreground 'git-gutter:deleted "black")
+  )
 (global-git-gutter-mode t)
 
-(set-face-foreground 'git-gutter:separator "#657b83") ; solarized-base00
-(set-face-background 'git-gutter:unchanged "#073642") ; solarized-base02
 
-(set-face-background 'git-gutter:modified "#b58900") ; solarized-yellow
-(set-face-foreground 'git-gutter:modified "black")
+;;;;;;;;;;;;;;;;;;;;;;
+;; goto-last-change ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(use-package goto-last-change)
 
-(set-face-background 'git-gutter:added "#859900") ; solarized-green
-(set-face-foreground 'git-gutter:added "black")
+(global-set-key (kbd "C-q") 'goto-last-change)
 
-(set-face-background 'git-gutter:deleted "#dc322f") ; solarized-red
-(set-face-foreground 'git-gutter:deleted "black")
+
+;;;;;;;;;;;;;;;
+;; yasnippet ;;
+;;;;;;;;;;;;;;;
+(use-package yasnippet)
+
+(yas-global-mode t)
+
+
+;;;;;;;;;
+;; avy ;;
+;;;;;;;;;
+(use-package avy)
+
+(global-set-key (kbd "C-c SPC") 'avy-goto-char-timer)
+
+;; TODO: projectil, helm-projectile
