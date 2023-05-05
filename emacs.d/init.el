@@ -78,6 +78,13 @@
 (global-set-key (kbd "C-c <SPC>")                    'helm-mark-ring)
 
 
+;;;;;;;;;;;;;
+;; company ;;
+;;;;;;;;;;;;;
+(use-package company)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; LSP configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -86,9 +93,11 @@
   :init (setq
          lsp-keymap-prefix "C-c l"
          lsp-idle-delay 0.1)
-  :hook ((c++-mode . lsp)
-         (c-mode . lsp)
+  :hook ((c++-mode . lsp-deferred)
+         (c-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
+  :bind (("M-/" . company-complete)
+         )
 )
 
 (use-package lsp-ui
@@ -99,6 +108,7 @@
   :commands helm-lsp-workspace-symbol
   )
 
+(use-package treemacs)
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list
   )
@@ -178,14 +188,6 @@
 (global-set-key (kbd "C-q") 'goto-last-change)
 
 
-;;;;;;;;;;;;;;;
-;; yasnippet ;;
-;;;;;;;;;;;;;;;
-(use-package yasnippet)
-
-(yas-global-mode t)
-
-
 ;;;;;;;;;
 ;; avy ;;
 ;;;;;;;;;
@@ -193,4 +195,4 @@
 
 (global-set-key (kbd "C-c SPC") 'avy-goto-char-timer)
 
-;; TODO: projectil, helm-projectile
+;; TODO: projectile, helm-projectile, yasnippet
