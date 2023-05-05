@@ -7,7 +7,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
+   '(helm-projectile helm-rg projectile undo-tree avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -71,7 +71,6 @@
 (global-set-key (kbd "M-x")                          'undefined)           ; must do before remapping M-X
 (global-set-key (kbd "M-x")                          'helm-M-x)            ; replace M-x with helm version
 (global-set-key (kbd "M-y")                          'helm-show-kill-ring) ; replace M-y with helm version
-(global-set-key (kbd "C-x C-f")                      'helm-find-files)     ; replace C-x C-f with helm version
 (define-key global-map [remap list-buffers]          'helm-mini)           ; replace C-x C-b with helm version
 
 ; Additional helm commands
@@ -96,8 +95,7 @@
   :hook ((c++-mode . lsp-deferred)
          (c-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
-  :bind (("M-/" . company-complete)
-         )
+  :bind (("M-/" . company-complete))
 )
 
 (use-package lsp-ui
@@ -194,5 +192,30 @@
 (use-package avy)
 
 (global-set-key (kbd "C-c SPC") 'avy-goto-char-timer)
+(global-set-key (kbd "C-x o") 'ace-window)
 
-;; TODO: projectile, helm-projectile, yasnippet
+
+;;;;;;;;;;;;;;;
+;; undo-tree ;;
+;;;;;;;;;;;;;;;
+(use-package undo-tree
+  :init (setq
+         undo-tree-visualizer-diff t
+         undo-tree-visualizer-timestamps t)
+  :bind (("C-c /" . undo-tree-visualize))
+  )
+(global-undo-tree-mode)
+
+
+;;;;;;;;;;;;;;;;
+;; projectile ;;
+;;;;;;;;;;;;;;;;
+(use-package projectile
+  :bind (("C-c s" . helm-projectile-rg)
+         ("C-x C-f" . helm-projectile-find-file))
+  )
+
+(use-package helm-projectile)
+
+(projectile-mode +1)
+;(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
