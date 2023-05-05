@@ -81,7 +81,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; LSP configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :init (setq
@@ -116,7 +115,6 @@
 ;;;;;;;;;;;;
 ;; Blamer ;;
 ;;;;;;;;;;;;
-
 (use-package blamer
   :ensure t
   :defer 20
