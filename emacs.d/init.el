@@ -68,13 +68,12 @@
 (use-package helm)
 
 ; Replace builtin commands with helm equivalents
-(global-set-key (kbd "M-x")                          'undefined)           ; must do before remapping M-X
-(global-set-key (kbd "M-x")                          'helm-M-x)            ; replace M-x with helm version
-(global-set-key (kbd "M-y")                          'helm-show-kill-ring) ; replace M-y with helm version
-(define-key global-map [remap list-buffers]          'helm-mini)           ; replace C-x C-b with helm version
-
-; Additional helm commands
-(global-set-key (kbd "C-c <SPC>")                    'helm-mark-ring)
+(global-set-key (kbd "M-x")                 'undefined)           ; must do before remapping M-X
+(global-set-key (kbd "M-x")                 'helm-M-x)            ; replace M-x with helm version
+(global-set-key (kbd "M-y")                 'helm-show-kill-ring) ; replace M-y with helm version
+(define-key global-map [remap list-buffers] 'helm-mini)           ; replace C-x C-b with helm version
+(global-set-key (kbd "C-c x")               'helm-mark-ring)      ; show recent marks
+(global-set-key (kbd "C-x C-f")             'helm-find-files)
 
 
 ;;;;;;;;;;;;;
@@ -145,7 +144,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 (use-package multiple-cursors)
 
-(global-set-key (kbd "C-.") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c .") 'mc/mark-next-like-this)
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -212,10 +211,19 @@
 ;;;;;;;;;;;;;;;;
 (use-package projectile
   :bind (("C-c s" . helm-projectile-rg)
-         ("C-x C-f" . helm-projectile-find-file))
+         ("C-c f" . helm-projectile-find-file))
   )
 
 (use-package helm-projectile)
 
 (projectile-mode +1)
 ;(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+
+;;;;;;;;;;;;;;;;;;;;
+;; electric-pairs ;;
+;;;;;;;;;;;;;;;;;;;;
+(electric-pair-mode 1)
+(setq electric-pair-pairs
+      '((?\' . ?\')
+        (?\{ . ?\})))
