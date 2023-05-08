@@ -7,7 +7,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm-projectile helm-rg projectile undo-tree avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
+   '(drag-stuff helm-projectile helm-rg projectile undo-tree avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -108,7 +108,10 @@
 (use-package treemacs)
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list
+  ;; :hook ((c++-mode . lsp-treemacs-symbols)
+  ;;        (c-mode . lsp-treemacs-symbols))
   )
+(lsp-treemacs-sync-mode 1)
 
 (use-package dap-mode)
 
@@ -227,3 +230,13 @@
 (setq electric-pair-pairs
       '((?\' . ?\')
         (?\{ . ?\})))
+
+
+;;;;;;;;;;;;;;;;
+;; drag-stuff ;;
+;;;;;;;;;;;;;;;;
+(use-package drag-stuff
+  :bind (("M-p" . drag-stuff-up)
+         ("M-n" . drag-stuff-down))
+  )
+(drag-stuff-global-mode 1)
