@@ -27,10 +27,13 @@
     b = branch -vv # always show all branches and verbose info
     d = diff
     dc = diff --cached
+    dt = difftool
+    dtc = difftool --cached
     s = status
     ci = commit
     co = checkout
     pr = pull --rebase
+    upstream = !"git push -u origin HEAD"
     ssave = "!f() { git stash save $1; }; f"
     sshow = "!f() { git stash show stash^{/$*} -p; }; f"
     sdrop = "!f() { git stash drop stash^{/$*}; }; f"
@@ -41,18 +44,17 @@
     #sapply = "!sh -c 'git stash apply stash@{$1}' -"
     #sdrop = "!sh -c 'git stash drop stash@{$1}' -"
     #sshow = "!sh -c 'git stash show stash@{$1} -p' -"
+    sc = stash --keep-index # analogous to 'dc' above, only stash modified/untracked
 
     diffr  = !"git diff "$1"^.."$1"" # diff-revision (usage: diffr <hash> <hash>)
     ia = merge-base --is-ancestor # is-ancestor (usage: ia <hash> <hash>)
     forget = rm --cached
     addu = add --update # adds only tracked files to stage
+    undelete = restore --staged --worktree
 
     # Common typos
     pus = push
     pul = pull
-    dif = diff
-
-    difft = difftool
 
 [difftool]
     prompt = false
@@ -83,4 +85,4 @@
 
 [user]
 	name = Ryan Maus
-	email = rmaus@headlandstech.com
+	email = rmaus@ntglobalmarkets.com

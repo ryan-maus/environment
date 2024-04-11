@@ -7,7 +7,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(drag-stuff helm-projectile helm-rg projectile undo-tree avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
+   '(dockerfile-mode ccls drag-stuff helm-projectile helm-rg projectile undo-tree avy goto-last-change git-gutter expand-region multiple-cursors blamer company dap-mode flycheck helm helm-lsp helm-xref use-package which-key lsp-treemacs lsp-ui solarized-theme lsp-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -61,6 +61,8 @@
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 
+; Rebalance windows after splitting vertically
+(defadvice split-window-right (after rebalance-windows activate) (balance-windows))
 
 ;;;;;;;;;;
 ;; helm ;;
@@ -119,6 +121,10 @@
 
 (use-package which-key
   :config (which-key-mode)
+  )
+
+(use-package ccls
+  :init (setq ccls-executable "/home/rmaus/source/headlands/clang_compile_commands/ccls")
   )
 
 
@@ -240,3 +246,8 @@
          ("M-n" . drag-stuff-down))
   )
 (drag-stuff-global-mode 1)
+
+
+;; TODO: helm-man-woman
+;; TODO: something for clang-format
+;; TODO: block navigation keybinds

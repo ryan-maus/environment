@@ -288,9 +288,9 @@ zplug "bhilburn/powerlevel9k", as:theme
 
 	per_dir_history_status(){
 	    if [[ $_per_directory_history_is_global == true ]]; then
-		    echo "\u$CODEPOINT_OF_AWESOME_GLOBE"
+		    echo "\ueb01"
 	    else
-		    echo "\u$CODEPOINT_OF_OCTICONS_FILE_SUBMODULE"
+		    echo "\uea83"
 	    fi
 	}
 	POWERLEVEL9K_CUSTOM_PER_DIR_HISTORY_STATUS="per_dir_history_status"
@@ -299,7 +299,7 @@ zplug "bhilburn/powerlevel9k", as:theme
 
 	get_gcloud_context(){
 		gcloud_context=$(gcloud config get-value project)
-		echo "\u${CODEPOINT_OF_DEVICONS_GOOGLE_CLOUD_PLATFORM} ${gcloud_context}"
+		echo "\uebaa ${gcloud_context}"
 	}
 	POWERLEVEL9K_CUSTOM_GCLOUD_CONTEXT="get_gcloud_context"
 	POWERLEVEL9K_CUSTOM_GCLOUD_CONTEXT_BACKGROUND="magenta"
@@ -307,7 +307,7 @@ zplug "bhilburn/powerlevel9k", as:theme
 
 	get_gke_context(){
 		gke_context=$(kubectl config current-context)
-		echo "\u${CODEPOINT_OF_DEVICONS_DOCKER} ${gke_context}"
+		echo "\ue7b2 ${gke_context}"
 	}
 	POWERLEVEL9K_CUSTOM_GKE_CONTEXT="get_gke_context"
 	POWERLEVEL9K_CUSTOM_GKE_CONTEXT_BACKGROUND="white"
